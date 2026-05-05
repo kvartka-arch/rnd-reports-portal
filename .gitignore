@@ -1,0 +1,24 @@
+# Private source materials
+sources/
+private/
+drafts/
+archive/
+
+# Raw research files
+*.pdf
+*.xlsx
+*.xls
+*.csv
+*.docx
+*.doc
+*.pptx
+*.ppt
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Local environment
+.env
+.venv/
+node_modules/
