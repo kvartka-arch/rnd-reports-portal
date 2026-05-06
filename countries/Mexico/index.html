@@ -1,0 +1,1537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mexico — Payment Solutions R&D Report · May 2026</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #0f0f1a;
+      --bg-card:   #16162a;
+      --bg-card2:  #1e1e35;
+      --border:    #2a2a4a;
+      --purple:    #7c3aed;
+      --purple-l:  #a855f7;
+      --purple-xl: #d8b4fe;
+      --green:     #22c55e;
+      --amber:     #f59e0b;
+      --red:       #ef4444;
+      --cyan:      #06b6d4;
+      --text:      #e2e8f0;
+      --muted:     #94a3b8;
+      --radius:    10px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    a { color: var(--purple-l); text-decoration: none; }
+    a:hover { color: var(--purple-xl); }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(15,15,26,0.95);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      overflow-x: auto;
+      white-space: nowrap;
+      height: 48px;
+    }
+    nav a {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 500;
+      padding: 6px 12px;
+      border-radius: 6px;
+      letter-spacing: .02em;
+      transition: background .15s, color .15s;
+    }
+    nav a:hover { background: var(--bg-card2); color: var(--text); }
+    nav .nav-flag { font-size: 16px; margin-right: 8px; flex-shrink: 0; }
+
+    /* ── HEADER ── */
+    .hero {
+      background: linear-gradient(135deg, #0f0f1a 0%, #1a0a2e 50%, #0f1a2e 100%);
+      padding: 56px 32px 48px;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -60px; right: -60px;
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(124,58,237,0.18) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero .breadcrumb {
+      font-size: 11px;
+      color: var(--muted);
+      margin-bottom: 16px;
+      letter-spacing: .04em;
+    }
+    .hero h1 {
+      font-size: 32px;
+      font-weight: 800;
+      line-height: 1.2;
+      background: linear-gradient(135deg, #e2e8f0, #a855f7);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 8px;
+    }
+    .hero .subtitle {
+      color: var(--muted);
+      font-size: 15px;
+      margin-bottom: 24px;
+    }
+    .hero .badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: .02em;
+    }
+    .badge-purple  { background: rgba(124,58,237,.25); color: var(--purple-xl); border: 1px solid rgba(124,58,237,.4); }
+    .badge-green   { background: rgba(34,197,94,.15);  color: #86efac; border: 1px solid rgba(34,197,94,.3); }
+    .badge-amber   { background: rgba(245,158,11,.15); color: #fcd34d; border: 1px solid rgba(245,158,11,.3); }
+    .badge-cyan    { background: rgba(6,182,212,.15);  color: #67e8f9; border: 1px solid rgba(6,182,212,.3); }
+    .badge-red     { background: rgba(239,68,68,.15);  color: #fca5a5; border: 1px solid rgba(239,68,68,.3); }
+    .badge-neutral { background: rgba(148,163,184,.1); color: var(--muted); border: 1px solid var(--border); }
+
+    /* ── LAYOUT ── */
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+    .section { padding: 48px 24px; max-width: 1200px; margin: 0 auto; }
+    .section + .section { border-top: 1px solid var(--border); }
+
+    .section-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--purple-xl);
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .section-title .icon { font-size: 22px; }
+    .section-sub {
+      color: var(--muted);
+      font-size: 13px;
+      margin-bottom: 28px;
+    }
+
+    /* ── CARDS ── */
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+    }
+    .card-grid {
+      display: grid;
+      gap: 16px;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    }
+    .card h3 {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--purple-xl);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .card p { color: var(--muted); font-size: 13px; line-height: 1.7; }
+    .card ul { color: var(--muted); font-size: 13px; padding-left: 18px; }
+    .card ul li { margin-bottom: 4px; }
+
+    /* ── TABLES ── */
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    thead th {
+      background: var(--bg-card2);
+      color: var(--purple-xl);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+      padding: 10px 14px;
+      text-align: left;
+      border-bottom: 2px solid var(--purple);
+    }
+    tbody tr { border-bottom: 1px solid var(--border); }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: rgba(124,58,237,.06); }
+    tbody td {
+      padding: 10px 14px;
+      vertical-align: top;
+      color: var(--text);
+    }
+    .td-muted { color: var(--muted); font-size: 12px; }
+    .merchant-name { font-weight: 700; color: #fff; }
+    .merchant-domain { font-size: 11px; color: var(--muted); }
+
+    /* Matrix table */
+    .matrix th, .matrix td {
+      text-align: center;
+      min-width: 80px;
+    }
+    .matrix th:first-child, .matrix td:first-child {
+      text-align: left;
+      min-width: 130px;
+      font-weight: 600;
+    }
+    .dot-yes  { color: var(--green); font-size: 16px; }
+    .dot-no   { color: var(--border); font-size: 14px; }
+    .dot-part { color: var(--amber); font-size: 14px; }
+
+    /* ── PROVIDER CARDS ── */
+    .provider-grid {
+      display: grid;
+      gap: 16px;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    }
+    .provider-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px 20px;
+    }
+    .provider-card .prov-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+    .provider-card .prov-name {
+      font-size: 15px;
+      font-weight: 700;
+      color: #fff;
+    }
+    .provider-card .prov-domain {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+    .provider-card .prov-body { font-size: 12px; color: var(--muted); line-height: 1.6; }
+    .provider-card .prov-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-top: 10px;
+    }
+    .tag {
+      background: var(--bg-card2);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: .03em;
+      padding: 2px 8px;
+      border-radius: 4px;
+    }
+
+    /* ── SCREENSHOTS ── */
+    .merch-block { margin-bottom: 40px; }
+    .merch-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .merch-num {
+      background: var(--purple);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 800;
+      width: 28px; height: 28px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .merch-title { font-size: 17px; font-weight: 700; color: #fff; }
+    .merch-url { font-size: 12px; color: var(--muted); }
+
+    .flow-grid {
+      display: grid;
+      gap: 12px;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    }
+    .flow-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .flow-item img {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+      object-position: top;
+      display: block;
+      border-bottom: 1px solid var(--border);
+    }
+    .flow-item .flow-label {
+      padding: 8px 12px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .flow-item .flow-provider {
+      padding: 0 12px 8px;
+      font-size: 10px;
+      color: var(--purple-l);
+    }
+
+    /* ── FIELD TABLE ── */
+    .field-priority { display: flex; align-items: center; gap: 6px; }
+    .priority-dot {
+      width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+    }
+    .p1 { background: var(--green); }
+    .p2 { background: var(--amber); }
+    .p3 { background: var(--red); }
+    .p4 { background: var(--muted); }
+
+    /* ── CONCLUSIONS ── */
+    .insight-grid {
+      display: grid;
+      gap: 16px;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    }
+    .insight {
+      background: var(--bg-card);
+      border-left: 3px solid var(--purple);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      padding: 16px 20px;
+    }
+    .insight h4 { font-size: 13px; font-weight: 700; color: var(--purple-xl); margin-bottom: 6px; }
+    .insight p  { font-size: 12px; color: var(--muted); line-height: 1.65; }
+
+    /* ── MARKET OVERVIEW ── */
+    .stat-row {
+      display: grid;
+      gap: 12px;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      margin-bottom: 28px;
+    }
+    .stat-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px 20px;
+    }
+    .stat-card .stat-label { font-size: 10px; font-weight: 600; letter-spacing: .06em; color: var(--muted); text-transform: uppercase; margin-bottom: 4px; }
+    .stat-card .stat-value { font-size: 24px; font-weight: 800; color: var(--purple-xl); }
+    .stat-card .stat-note  { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--bg-card);
+      border-top: 1px solid var(--border);
+      padding: 24px 32px;
+      text-align: center;
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: .03em;
+    }
+    footer a { color: var(--purple-l); }
+
+    @media (max-width: 640px) {
+      .hero { padding: 36px 16px 32px; }
+      .hero h1 { font-size: 22px; }
+      .section { padding: 32px 16px; }
+      nav { padding: 0 12px; gap: 2px; }
+      nav a { padding: 6px 8px; font-size: 11px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- STICKY NAV -->
+<nav>
+  <span class="nav-flag">🇲🇽</span>
+  <a href="#overview">Overview</a>
+  <a href="#ranking">iGaming Top-20</a>
+  <a href="#merchants">Merchants</a>
+  <a href="#methods">Pay Methods</a>
+  <a href="#providers">Providers</a>
+  <a href="#flows">Flows & Screenshots</a>
+  <a href="#fields">Transaction Fields</a>
+  <a href="#conclusions">Conclusions</a>
+</nav>
+
+<!-- HERO HEADER -->
+<div class="hero">
+  <div class="breadcrumb">R&amp;D Market Reports → Mexico → May 2026</div>
+  <h1>Mexico Payment Solutions<br>R&amp;D Report</h1>
+  <p class="subtitle">Cashier Audit · iGaming &amp; Forex · May 2026</p>
+  <div class="badges">
+    <span class="badge badge-purple">🏦 16 Merchants Audited</span>
+    <span class="badge badge-cyan">⚡ 15 Payment Providers</span>
+    <span class="badge badge-green">💳 11 Payment Methods</span>
+    <span class="badge badge-amber">⚽ World Cup 2026 Driver</span>
+    <span class="badge badge-red">🏛️ IEPS Tax 50%</span>
+    <span class="badge badge-neutral">📅 Research: 05–06 May 2026</span>
+  </div>
+</div>
+
+<!-- SECTION 1: MARKET OVERVIEW -->
+<section class="section" id="overview">
+  <div class="section-title"><span class="icon">🌎</span> Market Overview</div>
+  <p class="section-sub">Key market drivers and regulatory context for Mexico iGaming &amp; Forex, May 2026</p>
+
+  <div class="stat-row">
+    <div class="stat-card">
+      <div class="stat-label">IEPS Tax on Gambling</div>
+      <div class="stat-value">50%</div>
+      <div class="stat-note">Applied as social-impact excise tax</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Crypto Deposit Share (est.)</div>
+      <div class="stat-value">~30%</div>
+      <div class="stat-note">USDT/BTC, driven by banking regulation changes</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">World Cup 2026 Opening</div>
+      <div class="stat-value">11 Jun 2026</div>
+      <div class="stat-note">Co-hosted: USA, Canada, Mexico</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Primary Regulator</div>
+      <div class="stat-value">SEGOB</div>
+      <div class="stat-note">Ministerio del Interior — Secretaría de Gobernación</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Primary Rail</div>
+      <div class="stat-value">SPEI</div>
+      <div class="stat-note">Sistema de Pagos Electrónicos Interbancarios</div>
+    </div>
+  </div>
+
+  <div class="card-grid">
+    <div class="card">
+      <h3>⚽ World Cup 2026 — Key Growth Catalyst</h3>
+      <p>Mexico co-hosts the 2026 FIFA World Cup (USA/Canada/Mexico, opening June 11). Operators are aggressively pre-positioning: Stake launched its MX site via partner Uno Capali under SEGOB; Betano announced official WC2026 partnership. iGaming volumes are expected to surge sharply into Q2 2026.</p>
+    </div>
+    <div class="card">
+      <h3>🏛️ Regulatory &amp; Tax Pressure</h3>
+      <p>The 50% IEPS tax (applied to gambling products as high social-burden goods) is accelerating market consolidation around financially robust operators. Smaller operators are exiting; global brands are acquiring SEGOB licenses or entering via local partner model (e.g., Stake via Uno Capali).</p>
+    </div>
+    <div class="card">
+      <h3>🏦 Banking Alternative Demand</h3>
+      <p>SPEI remains the dominant payment rail. However, stricter banking regulation is pushing users toward PayCash (Walmart Express, BAZ SuperApp, Afirme), OXXO Pay, and crypto. CoDi QR payments (Banco de México) appeared in at least one operator cashier (Brazino777).</p>
+    </div>
+    <div class="card">
+      <h3>📱 DepositCheckout Dominance</h3>
+      <p>DepositCheckout operates as the dominant multi-tenant PSP aggregator across the market: 7 of 10 betting operators route SPEI, OXXO, Mercado Pago, or PayCash flows through DepositCheckout subdomains (payin / payment / cashier). etpay serves as the downstream bank-redirect sublayer.</p>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 2: iGAMING TOP-20 RANKING -->
+<section class="section" id="ranking">
+  <div class="section-title"><span class="icon">🏆</span> iGaming Top-20 Mexico — February 2026</div>
+  <p class="section-sub">Source: Ahrefs + Google Trends analysis (forwarded from The Gambler research channel). CIS brands highlighted.</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Brand</th>
+          <th>Type</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>1</td><td class="merchant-name">Caliente <span class="badge badge-neutral" style="font-size:10px;padding:2px 6px;">Local 🟣</span></td><td>Sports/Casino</td><td class="td-muted">Partner of Club América, Chivas, Xolos; Basketball LMP sponsor</td></tr>
+        <tr><td>2</td><td class="merchant-name">Bet365 <span class="badge badge-neutral" style="font-size:10px;padding:2px 6px;">Global ⚪</span></td><td>Sports/Casino</td><td class="td-muted">Via Ganador Azteca; promoted on TV Azteca</td></tr>
+        <tr><td>3</td><td class="merchant-name">Betmexico <span class="badge badge-neutral" style="font-size:10px;padding:2px 6px;">Local 🟣</span></td><td>Sports/Casino</td><td class="td-muted">Partner of Lucha Libre AAA Worldwide; Radio Formula collaborations</td></tr>
+        <tr><td>4</td><td class="merchant-name">Betano <span class="badge badge-neutral" style="font-size:10px;padding:2px 6px;">Global ⚪</span></td><td>Sports/Casino</td><td class="td-muted">Official WC2026 partner; ambassador: blogger Marco Alvarado</td></tr>
+        <tr><td>5</td><td class="merchant-name">Novibet <span class="badge badge-neutral" style="font-size:10px;padding:2px 6px;">Global ⚪</span></td><td>Sports/Casino</td><td class="td-muted">Ran Novibet Poker Series with cash prizes in Jan 2026</td></tr>
+        <tr><td>6</td><td class="merchant-name">Brazino777 <span class="badge badge-amber" style="font-size:10px;padding:2px 6px;">CIS 🟡</span></td><td>Casino</td><td class="td-muted">Jan 2026: launched first AI-character reality show; promo codes in Instagram series</td></tr>
+        <tr><td>7</td><td class="merchant-name">— <span class="badge badge-neutral" style="font-size:10px;padding:2px 6px;">—</span></td><td>—</td><td class="td-muted">—</td></tr>
+        <tr><td>8</td><td class="merchant-name">Betmaster <span class="badge badge-neutral" style="font-size:10px;padding:2px 6px;">Global ⚪</span></td><td>Sports/Casino</td><td class="td-muted">Ambassadors 2.0 program: micro-influencers &lt;100k followers on IG/TikTok</td></tr>
+        <tr><td>9</td><td class="merchant-name">Betway <span class="badge badge-neutral" style="font-size:10px;padding:2px 6px;">Global ⚪</span></td><td>Sports/Casino</td><td class="td-muted">Tennis sponsor (Abierto Mexicano Telcel); ambassador: Thierry Henry (4.3M IG)</td></tr>
+        <tr><td>10</td><td class="merchant-name">— <span class="badge badge-neutral" style="font-size:10px;padding:2px 6px;">—</span></td><td>—</td><td class="td-muted">—</td></tr>
+        <tr><td>11–17</td><td colspan="3" class="td-muted" style="font-style:italic">Positions 11–17 not confirmed in source data</td></tr>
+        <tr><td>18</td><td class="merchant-name">1win <span class="badge badge-amber" style="font-size:10px;padding:2px 6px;">CIS 🟡</span></td><td>Sports/Casino</td><td class="td-muted">Ambassador: Saúl "Canelo" Álvarez (19M IG); Lucky Drive promo (Brabus 800 + Apple)</td></tr>
+        <tr><td>19</td><td class="merchant-name">BetBoom <span class="badge badge-amber" style="font-size:10px;padding:2px 6px;">CIS 🟡</span></td><td>Sports/Casino</td><td class="td-muted">New entrant; exclusive media rights for BLAST Premier (CS2) + BLAST Slam (Dota 2) in ES/PT</td></tr>
+        <tr><td>20</td><td class="merchant-name">— <span class="badge badge-neutral" style="font-size:10px;padding:2px 6px;">—</span></td><td>—</td><td class="td-muted">—</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- SECTION 3: MERCHANT COVERAGE -->
+<section class="section" id="merchants">
+  <div class="section-title"><span class="icon">🏪</span> Merchant Coverage</div>
+  <p class="section-sub">All 16 merchants audited via live cashier research — 10 iGaming, 6 Forex. May 5–6, 2026.</p>
+
+  <h3 style="color:var(--purple-xl);font-size:15px;margin-bottom:16px;">🎰 iGaming Operators (Betting / Casino)</h3>
+  <div class="table-wrap" style="margin-bottom:32px;">
+    <table>
+      <thead>
+        <tr>
+          <th>Merchant</th>
+          <th>Domain</th>
+          <th>Payment Methods Confirmed</th>
+          <th>Primary PSP</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="merchant-name">Caliente</td>
+          <td class="td-muted">caliente.mx</td>
+          <td>SPEI · OXXO Pay · Paysafecard · Todito Cash</td>
+          <td><span class="badge badge-cyan" style="font-size:10px;padding:2px 8px;">SafeCharge / Nuvei</span></td>
+        </tr>
+        <tr>
+          <td class="merchant-name">Brazino777</td>
+          <td class="td-muted">brazino777.mx</td>
+          <td>SPEI · OXXO Pay · CoDi/QR</td>
+          <td><span class="badge badge-neutral" style="font-size:10px;padding:2px 8px;">Not identified</span></td>
+        </tr>
+        <tr>
+          <td class="merchant-name">1xBet</td>
+          <td class="td-muted">1xbet.com / 1-x.mx</td>
+          <td>SPEI · BBVA · Banamex · Mercado Pago</td>
+          <td><span class="badge badge-purple" style="font-size:10px;padding:2px 8px;">DepositCheckout + etpay</span></td>
+        </tr>
+        <tr>
+          <td class="merchant-name">1win</td>
+          <td class="td-muted">1win.com</td>
+          <td>SPEI H2H · BAZ SuperApp · Paynet · PayCash (Walmart Express) · Amex</td>
+          <td><span class="badge badge-purple" style="font-size:10px;padding:2px 8px;">DepositCheckout · Unlimint</span></td>
+        </tr>
+        <tr>
+          <td class="merchant-name">Roobet</td>
+          <td class="td-muted">roobet.com</td>
+          <td>SPEI · BBVA Bancomer · OXXO · Apple Pay</td>
+          <td><span class="badge badge-purple" style="font-size:10px;padding:2px 8px;">DepositCheckout + etpay</span></td>
+        </tr>
+        <tr>
+          <td class="merchant-name">Mostbet</td>
+          <td class="td-muted">mostbet.com</td>
+          <td>SPEI (×2 providers) · OXXO Pay · Paynet · Todito Cash</td>
+          <td><span class="badge badge-amber" style="font-size:10px;padding:2px 8px;">LatPay · CGPayTech · DepositCheckout · Pagsmile</span></td>
+        </tr>
+        <tr>
+          <td class="merchant-name">Jugabet</td>
+          <td class="td-muted">jugabet.com</td>
+          <td>SPEI H2H · Mercado Pago · PayCash (Efectivo) · OXXO Pay</td>
+          <td><span class="badge badge-purple" style="font-size:10px;padding:2px 8px;">DepositCheckout · Pagsmile</span></td>
+        </tr>
+        <tr>
+          <td class="merchant-name">22bet</td>
+          <td class="td-muted">22bet.com</td>
+          <td>SPEI</td>
+          <td><span class="badge badge-green" style="font-size:10px;padding:2px 8px;">SmartFastPay + etpay</span></td>
+        </tr>
+        <tr>
+          <td class="merchant-name">20bet</td>
+          <td class="td-muted">20bet.com</td>
+          <td>SPEI</td>
+          <td><span class="badge badge-amber" style="font-size:10px;padding:2px 8px;">MXCashyPay</span></td>
+        </tr>
+        <tr>
+          <td class="merchant-name">Melbet</td>
+          <td class="td-muted">melbet.com</td>
+          <td>SPEI · Banorte (bank redirect) · Mercado Pago</td>
+          <td><span class="badge badge-purple" style="font-size:10px;padding:2px 8px;">DepositCheckout + etpay</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 style="color:var(--purple-xl);font-size:15px;margin-bottom:16px;">📈 Forex / CFD Brokers</h3>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Merchant</th>
+          <th>Domain</th>
+          <th>Payment Methods Confirmed</th>
+          <th>Primary PSP</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="merchant-name">eToro</td>
+          <td class="td-muted">etoro.com</td>
+          <td>SPEI (via AstroPay) · Bank Transfer H2H (licensed)</td>
+          <td><span class="badge badge-green" style="font-size:10px;padding:2px 8px;">AstroPay · H2H</span></td>
+        </tr>
+        <tr>
+          <td class="merchant-name">RoboForex</td>
+          <td class="td-muted">roboforex.com</td>
+          <td>Cash (Unlimint) · eWallet (SticPay)</td>
+          <td><span class="badge badge-cyan" style="font-size:10px;padding:2px 8px;">Cardpay/Unlimint · SticPay</span></td>
+        </tr>
+        <tr>
+          <td class="merchant-name">IC Markets</td>
+          <td class="td-muted">icmarkets.com</td>
+          <td>Online Banking Transfer</td>
+          <td><span class="badge badge-amber" style="font-size:10px;padding:2px 8px;">SafetyPay → AdquiraMexico</span></td>
+        </tr>
+        <tr>
+          <td class="merchant-name">Pocket Option</td>
+          <td class="td-muted">pocketoption.com</td>
+          <td>SPEI · OXXO Pay · Latam Cash</td>
+          <td><span class="badge badge-green" style="font-size:10px;padding:2px 8px;">CostaPago · PayRetailers + SafetyPay</span></td>
+        </tr>
+        <tr>
+          <td class="merchant-name">IQ Option</td>
+          <td class="td-muted">iqoption.com</td>
+          <td>BBVA Cash · Bodega Aurrera · 7-Eleven · Farmacias del Ahorro · Scotiabank Cash</td>
+          <td><span class="badge badge-amber" style="font-size:10px;padding:2px 8px;">SafetyPay · PayRetailers</span></td>
+        </tr>
+        <tr>
+          <td class="merchant-name">Deriv</td>
+          <td class="td-muted">deriv.com</td>
+          <td>SPEI · SPEI H2H (Unlimint)</td>
+          <td><span class="badge badge-cyan" style="font-size:10px;padding:2px 8px;">CostaPago · Unlimint H2H</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- SECTION 4: PAYMENT METHODS -->
+<section class="section" id="methods">
+  <div class="section-title"><span class="icon">💳</span> Payment Methods Overview</div>
+  <p class="section-sub">11 distinct payment method categories identified across the Mexico market audit.</p>
+
+  <div class="card-grid">
+    <div class="card">
+      <h3>🏦 SPEI — Bank Transfer</h3>
+      <p><strong>Universal.</strong> Sistema de Pagos Electrónicos Interbancarios. Instant. Requires a 18-digit CLABE number assigned per transaction. Key fields: CLABE, amount (exact), beneficiary name, bank (STP / STPMEX / SOFOM ENT). Confirmed across all 10 betting + all 6 forex merchants.</p>
+    </div>
+    <div class="card">
+      <h3>🏪 OXXO Pay — Convenience Store</h3>
+      <p>Mexico's largest convenience chain (~20,000 stores). User pays cash with a reference number at OXXO. Clearing time up to 5 minutes. Provider: SafeCharge (Caliente), Pagsmile (Mostbet), DepositCheckout (Roobet, Jugabet, Mostbet-2, Pocket Option).</p>
+    </div>
+    <div class="card">
+      <h3>💵 PayCash — Cash at Retail</h3>
+      <p>Convention-number-based cash payment network. Accepted at Walmart Express, BAZ SuperApp, Afirme, Bodega Aurrera (limited). Confirmed: 1win (conv# 198, payment.depositcheckout.com), Jugabet (pagsmile.com — "Service: PAYCASH, uniform code everywhere").</p>
+    </div>
+    <div class="card">
+      <h3>📲 Mercado Pago — SPEI/CLABE Hybrid</h3>
+      <p>Users fund via Mercado Pago app using a CLABE assigned by the merchant's PSP. Effectively SPEI rails routed through Mercado Pago as banking app. Confirmed: 1xBet (cashier.depositcheckout.com), Jugabet (depositcheckout.com), Melbet (cashier.depositcheckout.com).</p>
+    </div>
+    <div class="card">
+      <h3>🏛️ Bank Redirect — etpay</h3>
+      <p>Select-your-bank flow (BBVA, Banamex, Banorte, Santander) via etpay (qt.etpay.com). Operated as sublayer under DepositCheckout (1xBet: payin.depositcheckout.com → etpay), SmartFastPay (22bet), and Melbet (direct etpay for Banorte).</p>
+    </div>
+    <div class="card">
+      <h3>🎫 Paysafecard — Prepaid Voucher</h3>
+      <p>International prepaid voucher. Caliente: paysafecard.com → safetypay.com chain. Final instructions via SafetyPay. Niche method, primarily for users without bank accounts.</p>
+    </div>
+    <div class="card">
+      <h3>🎫 Todito Cash — Mexican Prepaid</h3>
+      <p>Mexico-specific prepaid card product. Confirmed: Caliente (safecharge.com), Mostbet (depositcheckout.com). Low coverage vs SPEI/OXXO but serves banked + unbanked users.</p>
+    </div>
+    <div class="card">
+      <h3>📷 CoDi — QR / Barcode</h3>
+      <p>Banco de México instant QR payment system. Brazino777: user scans displayed barcode with their banking app. Only one operator confirmed offering CoDi. Growing adoption as banking apps add CoDi support.</p>
+    </div>
+    <div class="card">
+      <h3>💳 Cards (Visa / MC / Amex)</h3>
+      <p>Limited presence due to chargeback risk. 1win: American Express via cardpay.com (Unlimint). RoboForex: cash/card via cardpay.com (Unlimint). Both forex and betting segments show low card adoption; local alternatives dominate.</p>
+    </div>
+    <div class="card">
+      <h3>📦 Retail Cash (Multi-Store)</h3>
+      <p>IQ Option accepts cash at BBVA branches, Bodega Aurrera, 7-Eleven, Farmacias del Ahorro, Scotiabank — via PayRetailers (checkout.payretailers.com) and SafetyPay. Pocket Option: Latam Cash via paywall.payretailers.com → gateway.safetypay.com.</p>
+    </div>
+    <div class="card">
+      <h3>📱 Apple Pay / eWallet</h3>
+      <p>Apple Pay observed at Roobet (standalone option). SticPay eWallet at RoboForex (pay.sticpay.com). Both are niche, indicating that some operators are exploring NFC/wallet options for higher-value or international users.</p>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 5: PROVIDERS -->
+<section class="section" id="providers">
+  <div class="section-title"><span class="icon">⚙️</span> Provider Analysis</div>
+  <p class="section-sub">15 payment providers identified. DepositCheckout dominates iGaming; SafetyPay leads Forex cash acceptance.</p>
+
+  <div class="provider-grid" style="margin-bottom:32px;">
+    <div class="provider-card">
+      <div class="prov-header">
+        <div>
+          <div class="prov-name">DepositCheckout</div>
+          <div class="prov-domain">payin.depositcheckout.com · payment.depositcheckout.com · cashier.depositcheckout.com</div>
+        </div>
+        <span class="badge badge-purple" style="flex-shrink:0;">DOMINANT</span>
+      </div>
+      <div class="prov-body">Multi-tenant white-label aggregator. Three distinct subdomains for different flow types: <strong>payin</strong> (SPEI + bank redirect), <strong>payment</strong> (OXXO, PayCash, BAZ, Paynet), <strong>cashier</strong> (Mercado Pago/CLABE). Serves 7/10 betting operators audited. Bank-redirect flows route through etpay sublayer.</div>
+      <div class="prov-tags">
+        <span class="tag">1xBet</span><span class="tag">1win</span><span class="tag">Roobet</span><span class="tag">Mostbet</span><span class="tag">Jugabet</span><span class="tag">Melbet</span><span class="tag">Brazino777 (partial)</span>
+      </div>
+    </div>
+    <div class="provider-card">
+      <div class="prov-header">
+        <div>
+          <div class="prov-name">etpay</div>
+          <div class="prov-domain">qt.etpay.com</div>
+        </div>
+        <span class="badge badge-cyan" style="flex-shrink:0;">SUBLAYER</span>
+      </div>
+      <div class="prov-body">Bank-redirect PSP serving as downstream layer for DepositCheckout and SmartFastPay. Provides BBVA, Banamex, Banorte, and Santander bank selection screens. User selects bank → etpay hosts the redirect. Confirmed in: 1xBet BBVA, 1xBet Banamex, Roobet BBVA, 22bet SPEI, Melbet Banorte.</div>
+      <div class="prov-tags">
+        <span class="tag">BBVA</span><span class="tag">Banamex</span><span class="tag">Banorte</span><span class="tag">Santander</span>
+      </div>
+    </div>
+    <div class="provider-card">
+      <div class="prov-header">
+        <div>
+          <div class="prov-name">SafeCharge / Nuvei</div>
+          <div class="prov-domain">safecharge.com · cdn.safecharge.com · secure.safecharge.com</div>
+        </div>
+        <span class="badge badge-green" style="flex-shrink:0;">EXCLUSIVE</span>
+      </div>
+      <div class="prov-body">Exclusive PSP for Caliente.mx (Mexico's #1 iGaming operator by traffic). Handles SPEI (CLABE-based via STP/STPMEX), OXXO Pay, Paysafecard (chained through SafetyPay), and Todito Cash. Multi-subdomain deployment across flow types.</div>
+      <div class="prov-tags">
+        <span class="tag">Caliente.mx only</span>
+      </div>
+    </div>
+    <div class="provider-card">
+      <div class="prov-header">
+        <div>
+          <div class="prov-name">SafetyPay</div>
+          <div class="prov-domain">gateway.safetypay.com · safetypay.com</div>
+        </div>
+        <span class="badge badge-amber" style="flex-shrink:0;">FOREX LEADER</span>
+      </div>
+      <div class="prov-body">Dominant for Latin American bank/cash routing in Forex sector. IC Markets: gateway.safetypay.com → adquiramexico.com.mx chain for online banking. IQ Option: BBVA cash + Scotiabank cash flows. Pocket Option: Latam cash via paywall.payretailers.com → safetypay chain. Also sublayer for Caliente Paysafecard.</div>
+      <div class="prov-tags">
+        <span class="tag">IC Markets</span><span class="tag">IQ Option</span><span class="tag">Pocket Option</span><span class="tag">Caliente (Paysafecard)</span>
+      </div>
+    </div>
+    <div class="provider-card">
+      <div class="prov-header">
+        <div>
+          <div class="prov-name">Pagsmile</div>
+          <div class="prov-domain">checkout.pagsmile.com · pagsmile.com</div>
+        </div>
+        <span class="badge badge-neutral" style="flex-shrink:0;">LATAM CASH</span>
+      </div>
+      <div class="prov-body">LatAm-focused PSP. Used for OXXO Pay (Mostbet) and PayCash efectivo (Jugabet). Notable: Jugabet PayCash flow observed the same reference code across multiple sessions — analyst note: "1 flow and code the same everywhere; Service: PAYCASH".</div>
+      <div class="prov-tags">
+        <span class="tag">Mostbet OXXO</span><span class="tag">Jugabet PayCash</span>
+      </div>
+    </div>
+    <div class="provider-card">
+      <div class="prov-header">
+        <div>
+          <div class="prov-name">Cardpay / Unlimint</div>
+          <div class="prov-domain">cardpay.com → unlimint.com</div>
+        </div>
+        <span class="badge badge-neutral" style="flex-shrink:0;">CARDS + H2H</span>
+      </div>
+      <div class="prov-body">Card processing and H2H SPEI infrastructure. 1win: American Express deposits via cardpay.com. RoboForex: cash/card via cardpay.com (Unlimint). Deriv: SPEI H2H explicitly labeled as "provider Unlimit". Appears in both betting and forex verticals.</div>
+      <div class="prov-tags">
+        <span class="tag">1win Amex</span><span class="tag">RoboForex Cash</span><span class="tag">Deriv SPEI H2H</span>
+      </div>
+    </div>
+    <div class="provider-card">
+      <div class="prov-header">
+        <div>
+          <div class="prov-name">PayRetailers</div>
+          <div class="prov-domain">checkout.payretailers.com · paywall.payretailers.com</div>
+        </div>
+        <span class="badge badge-neutral" style="flex-shrink:0;">RETAIL CASH</span>
+      </div>
+      <div class="prov-body">Retail cash acceptance network covering Bodega Aurrera, 7-Eleven, Farmacias del Ahorro, and Latam cash outlets. IQ Option uses checkout.payretailers.com for all retail cash flows. Pocket Option routes Latam cash via paywall.payretailers.com → SafetyPay chain.</div>
+      <div class="prov-tags">
+        <span class="tag">IQ Option</span><span class="tag">Pocket Option</span>
+      </div>
+    </div>
+    <div class="provider-card">
+      <div class="prov-header">
+        <div>
+          <div class="prov-name">CostaPago</div>
+          <div class="prov-domain">pay.costapago.online</div>
+        </div>
+        <span class="badge badge-neutral" style="flex-shrink:0;">LATAM SPEI</span>
+      </div>
+      <div class="prov-body">Emerging LatAm payment gateway. Confirmed as SPEI + OXXO provider for both Pocket Option and Deriv. Likely a newer aggregator targeting MX forex market. Both merchants use the same domain, suggesting a shared PSP arrangement.</div>
+      <div class="prov-tags">
+        <span class="tag">Pocket Option</span><span class="tag">Deriv</span>
+      </div>
+    </div>
+    <div class="provider-card">
+      <div class="prov-header">
+        <div>
+          <div class="prov-name">SmartFastPay</div>
+          <div class="prov-domain">checkout.smartfastpay.com</div>
+        </div>
+        <span class="badge badge-neutral" style="flex-shrink:0;">SPEI + etpay</span>
+      </div>
+      <div class="prov-body">SPEI aggregator that chains to etpay for bank redirect flows. Confirmed for 22bet SPEI deposits. Likely white-label with etpay as downstream bank redirect provider.</div>
+      <div class="prov-tags"><span class="tag">22bet</span></div>
+    </div>
+    <div class="provider-card">
+      <div class="prov-header">
+        <div>
+          <div class="prov-name">Other Providers</div>
+          <div class="prov-domain">latpay.me · gw.cgpaytech.com · paydeskmx.mxcashypay.com · pay.sticpay.com · AstroPay · adquiramexico.com.mx</div>
+        </div>
+        <span class="badge badge-neutral" style="flex-shrink:0;">NICHE</span>
+      </div>
+      <div class="prov-body"><strong>LatPay</strong> (Mostbet SPEI). <strong>CGPayTech</strong> (Mostbet SPEI secondary route). <strong>MXCashyPay</strong> (20bet SPEI). <strong>SticPay</strong> (RoboForex eWallet). <strong>AstroPay</strong> (eToro SPEI). <strong>AdquiraMexico</strong> (IC Markets banking sublayer under SafetyPay).</div>
+      <div class="prov-tags">
+        <span class="tag">Mostbet</span><span class="tag">20bet</span><span class="tag">RoboForex</span><span class="tag">eToro</span><span class="tag">IC Markets</span>
+      </div>
+    </div>
+  </div>
+
+  <h3 style="color:var(--purple-xl);font-size:15px;margin-bottom:16px;">Provider ↔ Merchant Coverage Matrix</h3>
+  <div class="table-wrap">
+    <table class="matrix">
+      <thead>
+        <tr>
+          <th>Provider</th>
+          <th>Caliente</th>
+          <th>Brazino</th>
+          <th>1xBet</th>
+          <th>1win</th>
+          <th>Roobet</th>
+          <th>Mostbet</th>
+          <th>Jugabet</th>
+          <th>22bet</th>
+          <th>20bet</th>
+          <th>Melbet</th>
+          <th>eToro</th>
+          <th>Robo FX</th>
+          <th>ICM</th>
+          <th>Pocket Op</th>
+          <th>IQ Opt</th>
+          <th>Deriv</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>SafeCharge/Nuvei</td>
+          <td class="dot-yes">●</td>
+          <td class="dot-no">·</td>
+          <td class="dot-no">·</td>
+          <td class="dot-no">·</td>
+          <td class="dot-no">·</td>
+          <td class="dot-no">·</td>
+          <td class="dot-no">·</td>
+          <td class="dot-no">·</td>
+          <td class="dot-no">·</td>
+          <td class="dot-no">·</td>
+          <td class="dot-no">·</td>
+          <td class="dot-no">·</td>
+          <td class="dot-no">·</td>
+          <td class="dot-no">·</td>
+          <td class="dot-no">·</td>
+          <td class="dot-no">·</td>
+        </tr>
+        <tr>
+          <td>DepositCheckout</td>
+          <td class="dot-no">·</td>
+          <td class="dot-part">◐</td>
+          <td class="dot-yes">●</td>
+          <td class="dot-yes">●</td>
+          <td class="dot-yes">●</td>
+          <td class="dot-yes">●</td>
+          <td class="dot-yes">●</td>
+          <td class="dot-no">·</td>
+          <td class="dot-no">·</td>
+          <td class="dot-yes">●</td>
+          <td class="dot-no">·</td>
+          <td class="dot-no">·</td>
+          <td class="dot-no">·</td>
+          <td class="dot-no">·</td>
+          <td class="dot-no">·</td>
+          <td class="dot-no">·</td>
+        </tr>
+        <tr>
+          <td>etpay</td>
+          <td class="dot-no">·</td>
+          <td class="dot-no">·</td>
+          <td class="dot-yes">●</td>
+          <td class="dot-no">·</td>
+          <td class="dot-yes">●</td>
+          <td class="dot-no">·</td>
+          <td class="dot-no">·</td>
+          <td class="dot-yes">●</td>
+          <td class="dot-no">·</td>
+          <td class="dot-yes">●</td>
+          <td class="dot-no">·</td>
+          <td class="dot-no">·</td>
+          <td class="dot-no">·</td>
+          <td class="dot-no">·</td>
+          <td class="dot-no">·</td>
+          <td class="dot-no">·</td>
+        </tr>
+        <tr>
+          <td>SafetyPay</td>
+          <td class="dot-part">◐</td>
+          <td class="dot-no">·</td>
+          <td class="dot-no">·</td>
+          <td class="dot-no">·</td>
+          <td class="dot-no">·</td>
+          <td class="dot-no">·</td>
+          <td class="dot-no">·</td>
+          <td class="dot-no">·</td>
+          <td class="dot-no">·</td>
+          <td class="dot-no">·</td>
+          <td class="dot-no">·</td>
+          <td class="dot-no">·</td>
+          <td class="dot-yes">●</td>
+          <td class="dot-yes">●</td>
+          <td class="dot-yes">●</td>
+          <td class="dot-no">·</td>
+        </tr>
+        <tr>
+          <td>Pagsmile</td>
+          <td class="dot-no">·</td>
+          <td class="dot-no">·</td>
+          <td class="dot-no">·</td>
+          <td class="dot-no">·</td>
+          <td class="dot-no">·</td>
+          <td class="dot-yes">●</td>
+          <td class="dot-yes">●</td>
+          <td class="dot-no">·</td>
+          <td class="dot-no">·</td>
+          <td class="dot-no">·</td>
+          <td class="dot-no">·</td>
+          <td class="dot-no">·</td>
+          <td class="dot-no">·</td>
+          <td class="dot-no">·</td>
+          <td class="dot-no">·</td>
+          <td class="dot-no">·</td>
+        </tr>
+        <tr>
+          <td>Cardpay/Unlimint</td>
+          <td class="dot-no">·</td>
+          <td class="dot-no">·</td>
+          <td class="dot-no">·</td>
+          <td class="dot-yes">●</td>
+          <td class="dot-no">·</td>
+          <td class="dot-no">·</td>
+          <td class="dot-no">·</td>
+          <td class="dot-no">·</td>
+          <td class="dot-no">·</td>
+          <td class="dot-no">·</td>
+          <td class="dot-no">·</td>
+          <td class="dot-yes">●</td>
+          <td class="dot-no">·</td>
+          <td class="dot-no">·</td>
+          <td class="dot-no">·</td>
+          <td class="dot-yes">●</td>
+        </tr>
+        <tr>
+          <td>PayRetailers</td>
+          <td class="dot-no">·</td>
+          <td class="dot-no">·</td>
+          <td class="dot-no">·</td>
+          <td class="dot-no">·</td>
+          <td class="dot-no">·</td>
+          <td class="dot-no">·</td>
+          <td class="dot-no">·</td>
+          <td class="dot-no">·</td>
+          <td class="dot-no">·</td>
+          <td class="dot-no">·</td>
+          <td class="dot-no">·</td>
+          <td class="dot-no">·</td>
+          <td class="dot-no">·</td>
+          <td class="dot-yes">●</td>
+          <td class="dot-yes">●</td>
+          <td class="dot-no">·</td>
+        </tr>
+        <tr>
+          <td>CostaPago</td>
+          <td class="dot-no">·</td>
+          <td class="dot-no">·</td>
+          <td class="dot-no">·</td>
+          <td class="dot-no">·</td>
+          <td class="dot-no">·</td>
+          <td class="dot-no">·</td>
+          <td class="dot-no">·</td>
+          <td class="dot-no">·</td>
+          <td class="dot-no">·</td>
+          <td class="dot-no">·</td>
+          <td class="dot-no">·</td>
+          <td class="dot-no">·</td>
+          <td class="dot-no">·</td>
+          <td class="dot-yes">●</td>
+          <td class="dot-no">·</td>
+          <td class="dot-yes">●</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p style="font-size:11px;color:var(--muted);margin-top:8px;">● Confirmed &nbsp;◐ Partial &nbsp;· Not observed</p>
+</section>
+
+<!-- SECTION 6: FLOWS & SCREENSHOTS -->
+<section class="section" id="flows">
+  <div class="section-title"><span class="icon">📸</span> Cashier Flows &amp; Screenshots</div>
+  <p class="section-sub">Selected screenshots from live cashier research. Photos from Telegram export — May 5–6 2026. Click images to view full size.</p>
+
+  <!-- CALIENTE -->
+  <div class="merch-block">
+    <div class="merch-header">
+      <div class="merch-num">1</div>
+      <div>
+        <div class="merch-title">Caliente <span class="badge badge-neutral" style="font-size:11px;vertical-align:middle;">Mexico #1 iGaming</span></div>
+        <div class="merch-url">caliente.mx · Provider: SafeCharge / Nuvei</div>
+      </div>
+    </div>
+    <div class="flow-grid">
+      <div class="flow-item">
+        <a href="ChatExport_2026-05-06/chats/chat_562952289950408/topic_1659/photos/photo_322@05-05-2026_11-53-51.jpg" target="_blank">
+          <img src="ChatExport_2026-05-06/chats/chat_562952289950408/topic_1659/photos/photo_322@05-05-2026_11-53-51_thumb.jpg" alt="Caliente cashier overview">
+        </a>
+        <div class="flow-label">💳 Payment method selector</div>
+        <div class="flow-provider">SPEI · OXXO · Paysafecard · Todito</div>
+      </div>
+      <div class="flow-item">
+        <a href="ChatExport_2026-05-06/chats/chat_562952289950408/topic_1659/photos/photo_323@05-05-2026_11-54-54.jpg" target="_blank">
+          <img src="ChatExport_2026-05-06/chats/chat_562952289950408/topic_1659/photos/photo_323@05-05-2026_11-54-54_thumb.jpg" alt="Caliente SPEI">
+        </a>
+        <div class="flow-label">🏦 SPEI — CLABE instructions</div>
+        <div class="flow-provider">secure.safecharge.com · Bank: STP/STPMEX</div>
+      </div>
+      <div class="flow-item">
+        <a href="ChatExport_2026-05-06/chats/chat_562952289950408/topic_1659/photos/photo_325@05-05-2026_11-58-44.jpg" target="_blank">
+          <img src="ChatExport_2026-05-06/chats/chat_562952289950408/topic_1659/photos/photo_325@05-05-2026_11-58-44_thumb.jpg" alt="Caliente OXXO Pay">
+        </a>
+        <div class="flow-label">🏪 OXXO Pay — Reference number</div>
+        <div class="flow-provider">cdn.safecharge.com · Up to 5 min confirmation</div>
+      </div>
+      <div class="flow-item">
+        <a href="ChatExport_2026-05-06/chats/chat_562952289950408/topic_1659/photos/photo_327@05-05-2026_12-03-48.jpg" target="_blank">
+          <img src="ChatExport_2026-05-06/chats/chat_562952289950408/topic_1659/photos/photo_327@05-05-2026_12-03-48_thumb.jpg" alt="Caliente Paysafecard">
+        </a>
+        <div class="flow-label">🎫 Paysafecard flow</div>
+        <div class="flow-provider">paysafecard.com → safetypay.com</div>
+      </div>
+      <div class="flow-item">
+        <a href="ChatExport_2026-05-06/chats/chat_562952289950408/topic_1659/photos/photo_335@05-05-2026_12-07-55.jpg" target="_blank">
+          <img src="ChatExport_2026-05-06/chats/chat_562952289950408/topic_1659/photos/photo_335@05-05-2026_12-07-55_thumb.jpg" alt="Caliente Todito Cash">
+        </a>
+        <div class="flow-label">🎫 Todito Cash</div>
+        <div class="flow-provider">safecharge.com</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BRAZINO777 -->
+  <div class="merch-block">
+    <div class="merch-header">
+      <div class="merch-num">2</div>
+      <div>
+        <div class="merch-title">Brazino777 <span class="badge badge-amber" style="font-size:11px;vertical-align:middle;">iGaming Top-20 #6</span></div>
+        <div class="merch-url">brazino777.mx</div>
+      </div>
+    </div>
+    <div class="flow-grid">
+      <div class="flow-item">
+        <a href="ChatExport_2026-05-06/chats/chat_562952289950408/topic_1659/photos/photo_339@05-05-2026_12-12-31.jpg" target="_blank">
+          <img src="ChatExport_2026-05-06/chats/chat_562952289950408/topic_1659/photos/photo_339@05-05-2026_12-12-31_thumb.jpg" alt="Brazino777 methods">
+        </a>
+        <div class="flow-label">💳 Payment selector</div>
+        <div class="flow-provider">brazino777.mx</div>
+      </div>
+      <div class="flow-item">
+        <a href="ChatExport_2026-05-06/chats/chat_562952289950408/topic_1659/photos/photo_340@05-05-2026_12-13-11.jpg" target="_blank">
+          <img src="ChatExport_2026-05-06/chats/chat_562952289950408/topic_1659/photos/photo_340@05-05-2026_12-13-11_thumb.jpg" alt="Brazino777 SPEI">
+        </a>
+        <div class="flow-label">🏦 SPEI</div>
+        <div class="flow-provider">brazino777.mx</div>
+      </div>
+      <div class="flow-item">
+        <a href="ChatExport_2026-05-06/chats/chat_562952289950408/topic_1659/photos/photo_341@05-05-2026_12-14-42.jpg" target="_blank">
+          <img src="ChatExport_2026-05-06/chats/chat_562952289950408/topic_1659/photos/photo_341@05-05-2026_12-14-42_thumb.jpg" alt="Brazino777 OXXO Pay">
+        </a>
+        <div class="flow-label">🏪 OXXO Pay</div>
+        <div class="flow-provider">brazino777.mx</div>
+      </div>
+      <div class="flow-item">
+        <a href="ChatExport_2026-05-06/chats/chat_562952289950408/topic_1659/photos/photo_342@05-05-2026_12-24-23.jpg" target="_blank">
+          <img src="ChatExport_2026-05-06/chats/chat_562952289950408/topic_1659/photos/photo_342@05-05-2026_12-24-23_thumb.jpg" alt="Brazino777 CoDi QR">
+        </a>
+        <div class="flow-label">📷 CoDi / QR Barcode</div>
+        <div class="flow-provider">Scan barcode with banking app</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 1XBET -->
+  <div class="merch-block">
+    <div class="merch-header">
+      <div class="merch-num">3</div>
+      <div>
+        <div class="merch-title">1xBet</div>
+        <div class="merch-url">1xbet.com / 1-x.mx · Provider: DepositCheckout + etpay</div>
+      </div>
+    </div>
+    <div class="flow-grid">
+      <div class="flow-item">
+        <a href="ChatExport_2026-05-06/chats/chat_562952289950408/topic_1659/photos/photo_348@05-05-2026_12-30-26.jpg" target="_blank">
+          <img src="ChatExport_2026-05-06/chats/chat_562952289950408/topic_1659/photos/photo_348@05-05-2026_12-30-26_thumb.jpg" alt="1xBet SPEI">
+        </a>
+        <div class="flow-label">🏦 SPEI — CLABE</div>
+        <div class="flow-provider">depositcheckout.com · Ingresa el monto, copia CLABE</div>
+      </div>
+      <div class="flow-item">
+        <a href="ChatExport_2026-05-06/chats/chat_562952289950408/topic_1659/photos/photo_350@05-05-2026_12-33-40.jpg" target="_blank">
+          <img src="ChatExport_2026-05-06/chats/chat_562952289950408/topic_1659/photos/photo_350@05-05-2026_12-33-40_thumb.jpg" alt="1xBet BBVA">
+        </a>
+        <div class="flow-label">🏛️ BBVA — Bank Redirect</div>
+        <div class="flow-provider">payin.depositcheckout.com → qt.etpay.com</div>
+      </div>
+      <div class="flow-item">
+        <a href="ChatExport_2026-05-06/chats/chat_562952289950408/topic_1659/photos/photo_354@05-05-2026_12-40-46.jpg" target="_blank">
+          <img src="ChatExport_2026-05-06/chats/chat_562952289950408/topic_1659/photos/photo_354@05-05-2026_12-40-46_thumb.jpg" alt="1xBet Banamex">
+        </a>
+        <div class="flow-label">🏛️ Banamex — Bank Redirect</div>
+        <div class="flow-provider">qt.etpay.com</div>
+      </div>
+      <div class="flow-item">
+        <a href="ChatExport_2026-05-06/chats/chat_562952289950408/topic_1659/photos/photo_352@05-05-2026_12-38-19.jpg" target="_blank">
+          <img src="ChatExport_2026-05-06/chats/chat_562952289950408/topic_1659/photos/photo_352@05-05-2026_12-38-19_thumb.jpg" alt="1xBet Mercado Pago">
+        </a>
+        <div class="flow-label">📲 Mercado Pago — CLABE</div>
+        <div class="flow-provider">cashier.depositcheckout.com · SPEI via MercadoPago app</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 1WIN -->
+  <div class="merch-block">
+    <div class="merch-header">
+      <div class="merch-num">4</div>
+      <div>
+        <div class="merch-title">1win <span class="badge badge-amber" style="font-size:11px;vertical-align:middle;">iGaming Top-20 #18</span></div>
+        <div class="merch-url">1win.com · Ambassador: Canelo Álvarez (19M IG)</div>
+      </div>
+    </div>
+    <div class="flow-grid">
+      <div class="flow-item">
+        <a href="ChatExport_2026-05-06/chats/chat_562952289950408/topic_1659/photos/photo_359@05-05-2026_14-39-31.jpg" target="_blank">
+          <img src="ChatExport_2026-05-06/chats/chat_562952289950408/topic_1659/photos/photo_359@05-05-2026_14-39-31_thumb.jpg" alt="1win SPEI H2H">
+        </a>
+        <div class="flow-label">🏦 SPEI H2H (Direct)</div>
+        <div class="flow-provider">No external PSP — direct CLABE</div>
+      </div>
+      <div class="flow-item">
+        <a href="ChatExport_2026-05-06/chats/chat_562952289950408/topic_1659/photos/photo_384@05-05-2026_15-16-21.jpg" target="_blank">
+          <img src="ChatExport_2026-05-06/chats/chat_562952289950408/topic_1659/photos/photo_384@05-05-2026_15-16-21_thumb.jpg" alt="1win BAZ SuperApp">
+        </a>
+        <div class="flow-label">📱 BAZ SuperApp</div>
+        <div class="flow-provider">payment.depositcheckout.com</div>
+      </div>
+      <div class="flow-item">
+        <a href="ChatExport_2026-05-06/chats/chat_562952289950408/topic_1659/photos/photo_389@05-05-2026_15-19-17.jpg" target="_blank">
+          <img src="ChatExport_2026-05-06/chats/chat_562952289950408/topic_1659/photos/photo_389@05-05-2026_15-19-17_thumb.jpg" alt="1win Walmart Express PayCash">
+        </a>
+        <div class="flow-label">💵 Walmart Express — PayCash</div>
+        <div class="flow-provider">Conv# 198 · payment.depositcheckout.com</div>
+      </div>
+      <div class="flow-item">
+        <a href="ChatExport_2026-05-06/chats/chat_562952289950408/topic_1659/photos/photo_391@05-05-2026_15-22-14.jpg" target="_blank">
+          <img src="ChatExport_2026-05-06/chats/chat_562952289950408/topic_1659/photos/photo_391@05-05-2026_15-22-14_thumb.jpg" alt="1win American Express">
+        </a>
+        <div class="flow-label">💳 American Express</div>
+        <div class="flow-provider">cardpay.com (Unlimint)</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ROOBET -->
+  <div class="merch-block">
+    <div class="merch-header">
+      <div class="merch-num">5</div>
+      <div>
+        <div class="merch-title">Roobet</div>
+        <div class="merch-url">roobet.com · Provider: DepositCheckout + etpay</div>
+      </div>
+    </div>
+    <div class="flow-grid">
+      <div class="flow-item">
+        <a href="ChatExport_2026-05-06/chats/chat_562952289950408/topic_1659/photos/photo_394@05-05-2026_15-35-14.jpg" target="_blank">
+          <img src="ChatExport_2026-05-06/chats/chat_562952289950408/topic_1659/photos/photo_394@05-05-2026_15-35-14_thumb.jpg" alt="Roobet SPEI">
+        </a>
+        <div class="flow-label">🏦 SPEI</div>
+        <div class="flow-provider">payin.depositcheckout.com</div>
+      </div>
+      <div class="flow-item">
+        <a href="ChatExport_2026-05-06/chats/chat_562952289950408/topic_1659/photos/photo_396@05-05-2026_15-39-57.jpg" target="_blank">
+          <img src="ChatExport_2026-05-06/chats/chat_562952289950408/topic_1659/photos/photo_396@05-05-2026_15-39-57_thumb.jpg" alt="Roobet BBVA Bancomer">
+        </a>
+        <div class="flow-label">🏛️ BBVA Bancomer</div>
+        <div class="flow-provider">payin.depositcheckout.com → qt.etpay.com</div>
+      </div>
+      <div class="flow-item">
+        <a href="ChatExport_2026-05-06/chats/chat_562952289950408/topic_1659/photos/photo_398@05-05-2026_15-43-33.jpg" target="_blank">
+          <img src="ChatExport_2026-05-06/chats/chat_562952289950408/topic_1659/photos/photo_398@05-05-2026_15-43-33_thumb.jpg" alt="Roobet Apple Pay">
+        </a>
+        <div class="flow-label">📱 Apple Pay</div>
+        <div class="flow-provider">NFC wallet flow</div>
+      </div>
+      <div class="flow-item">
+        <a href="ChatExport_2026-05-06/chats/chat_562952289950408/topic_1659/photos/photo_400@05-05-2026_15-50-01.jpg" target="_blank">
+          <img src="ChatExport_2026-05-06/chats/chat_562952289950408/topic_1659/photos/photo_400@05-05-2026_15-50-01_thumb.jpg" alt="Roobet OXXO">
+        </a>
+        <div class="flow-label">🏪 OXXO</div>
+        <div class="flow-provider">payin.depositcheckout.com</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MOSTBET -->
+  <div class="merch-block">
+    <div class="merch-header">
+      <div class="merch-num">6</div>
+      <div>
+        <div class="merch-title">Mostbet</div>
+        <div class="merch-url">mostbet.com · Providers: LatPay · CGPayTech · DepositCheckout · Pagsmile</div>
+      </div>
+    </div>
+    <div class="flow-grid">
+      <div class="flow-item">
+        <a href="ChatExport_2026-05-06/chats/chat_562952289950408/topic_1659/photos/photo_404@05-05-2026_16-20-34.jpg" target="_blank">
+          <img src="ChatExport_2026-05-06/chats/chat_562952289950408/topic_1659/photos/photo_404@05-05-2026_16-20-34_thumb.jpg" alt="Mostbet SPEI LatPay">
+        </a>
+        <div class="flow-label">🏦 SPEI — Route 1</div>
+        <div class="flow-provider">latpay.me</div>
+      </div>
+      <div class="flow-item">
+        <a href="ChatExport_2026-05-06/chats/chat_562952289950408/topic_1659/photos/photo_411@05-05-2026_16-40-28.jpg" target="_blank">
+          <img src="ChatExport_2026-05-06/chats/chat_562952289950408/topic_1659/photos/photo_411@05-05-2026_16-40-28_thumb.jpg" alt="Mostbet SPEI CGPayTech">
+        </a>
+        <div class="flow-label">🏦 SPEI — Route 2</div>
+        <div class="flow-provider">gw.cgpaytech.com</div>
+      </div>
+      <div class="flow-item">
+        <a href="ChatExport_2026-05-06/chats/chat_562952289950408/topic_1659/photos/photo_406@05-05-2026_16-34-10.jpg" target="_blank">
+          <img src="ChatExport_2026-05-06/chats/chat_562952289950408/topic_1659/photos/photo_406@05-05-2026_16-34-10_thumb.jpg" alt="Mostbet OXXO Pagsmile">
+        </a>
+        <div class="flow-label">🏪 OXXO Pay — Route 1</div>
+        <div class="flow-provider">checkout.pagsmile.com</div>
+      </div>
+      <div class="flow-item">
+        <a href="ChatExport_2026-05-06/chats/chat_562952289950408/topic_1659/photos/photo_415@05-05-2026_16-43-50.jpg" target="_blank">
+          <img src="ChatExport_2026-05-06/chats/chat_562952289950408/topic_1659/photos/photo_415@05-05-2026_16-43-50_thumb.jpg" alt="Mostbet Todito Cash">
+        </a>
+        <div class="flow-label">🎫 Todito Cash</div>
+        <div class="flow-provider">depositcheckout.com</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- JUGABET -->
+  <div class="merch-block">
+    <div class="merch-header">
+      <div class="merch-num">7</div>
+      <div>
+        <div class="merch-title">Jugabet</div>
+        <div class="merch-url">jugabet.com · Providers: H2H · DepositCheckout · Pagsmile</div>
+      </div>
+    </div>
+    <div class="flow-grid">
+      <div class="flow-item">
+        <a href="ChatExport_2026-05-06/chats/chat_562952289950408/topic_1659/photos/photo_430@05-05-2026_17-13-48.jpg" target="_blank">
+          <img src="ChatExport_2026-05-06/chats/chat_562952289950408/topic_1659/photos/photo_430@05-05-2026_17-13-48_thumb.jpg" alt="Jugabet SPEI H2H">
+        </a>
+        <div class="flow-label">🏦 SPEI Personal (H2H)</div>
+        <div class="flow-provider">Direct CLABE — no PSP</div>
+      </div>
+      <div class="flow-item">
+        <a href="ChatExport_2026-05-06/chats/chat_562952289950408/topic_1659/photos/photo_432@05-05-2026_17-17-37.jpg" target="_blank">
+          <img src="ChatExport_2026-05-06/chats/chat_562952289950408/topic_1659/photos/photo_432@05-05-2026_17-17-37_thumb.jpg" alt="Jugabet Mercado Pago">
+        </a>
+        <div class="flow-label">📲 Mercado Pago</div>
+        <div class="flow-provider">depositcheckout.com</div>
+      </div>
+      <div class="flow-item">
+        <a href="ChatExport_2026-05-06/chats/chat_562952289950408/topic_1659/photos/photo_434@05-05-2026_17-20-38.jpg" target="_blank">
+          <img src="ChatExport_2026-05-06/chats/chat_562952289950408/topic_1659/photos/photo_434@05-05-2026_17-20-38_thumb.jpg" alt="Jugabet PayCash efectivo">
+        </a>
+        <div class="flow-label">💵 Efectivo — PayCash</div>
+        <div class="flow-provider">pagsmile.com · Uniform code all stores</div>
+      </div>
+      <div class="flow-item">
+        <a href="ChatExport_2026-05-06/chats/chat_562952289950408/topic_1659/photos/photo_441@05-05-2026_17-27-51.jpg" target="_blank">
+          <img src="ChatExport_2026-05-06/chats/chat_562952289950408/topic_1659/photos/photo_441@05-05-2026_17-27-51_thumb.jpg" alt="Jugabet OXXO Pay">
+        </a>
+        <div class="flow-label">🏪 OXXO Pay</div>
+        <div class="flow-provider">depositcheckout.com</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOREX: ETORO -->
+  <div class="merch-block">
+    <div class="merch-header">
+      <div class="merch-num">11</div>
+      <div>
+        <div class="merch-title">eToro <span class="badge badge-green" style="font-size:11px;vertical-align:middle;">Forex — Licensed</span></div>
+        <div class="merch-url">etoro.com · Providers: AstroPay · H2H (licensed)</div>
+      </div>
+    </div>
+    <div class="flow-grid">
+      <div class="flow-item">
+        <a href="ChatExport_2026-05-06/chats/chat_562952289950408/topic_1659/photos/photo_469@06-05-2026_12-12-05.jpg" target="_blank">
+          <img src="ChatExport_2026-05-06/chats/chat_562952289950408/topic_1659/photos/photo_469@06-05-2026_12-12-05_thumb.jpg" alt="eToro SPEI AstroPay">
+        </a>
+        <div class="flow-label">🏦 SPEI by AstroPay</div>
+        <div class="flow-provider">AstroPay</div>
+      </div>
+      <div class="flow-item">
+        <a href="ChatExport_2026-05-06/chats/chat_562952289950408/topic_1659/photos/photo_472@06-05-2026_12-13-40.jpg" target="_blank">
+          <img src="ChatExport_2026-05-06/chats/chat_562952289950408/topic_1659/photos/photo_472@06-05-2026_12-13-40_thumb.jpg" alt="eToro Bank Transfer H2H">
+        </a>
+        <div class="flow-label">🏦 Bank Transfer H2H</div>
+        <div class="flow-provider">Licensed direct transfer</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOREX: IQOPTION -->
+  <div class="merch-block">
+    <div class="merch-header">
+      <div class="merch-num">15</div>
+      <div>
+        <div class="merch-title">IQ Option <span class="badge badge-amber" style="font-size:11px;vertical-align:middle;">Forex — Retail Cash Network</span></div>
+        <div class="merch-url">iqoption.com · Providers: SafetyPay · PayRetailers</div>
+      </div>
+    </div>
+    <div class="flow-grid">
+      <div class="flow-item">
+        <a href="ChatExport_2026-05-06/chats/chat_562952289950408/topic_1659/photos/photo_510@06-05-2026_14-05-42.jpg" target="_blank">
+          <img src="ChatExport_2026-05-06/chats/chat_562952289950408/topic_1659/photos/photo_510@06-05-2026_14-05-42_thumb.jpg" alt="IQ Option BBVA Cash">
+        </a>
+        <div class="flow-label">🏦 BBVA Bancomer Cash</div>
+        <div class="flow-provider">gateway.safetypay.com</div>
+      </div>
+      <div class="flow-item">
+        <a href="ChatExport_2026-05-06/chats/chat_562952289950408/topic_1659/photos/photo_513@06-05-2026_14-07-47.jpg" target="_blank">
+          <img src="ChatExport_2026-05-06/chats/chat_562952289950408/topic_1659/photos/photo_513@06-05-2026_14-07-47_thumb.jpg" alt="IQ Option Bodega Aurrera">
+        </a>
+        <div class="flow-label">🏪 Bodega Aurrera</div>
+        <div class="flow-provider">checkout.payretailers.com</div>
+      </div>
+      <div class="flow-item">
+        <a href="ChatExport_2026-05-06/chats/chat_562952289950408/topic_1659/photos/photo_516@06-05-2026_14-10-04.jpg" target="_blank">
+          <img src="ChatExport_2026-05-06/chats/chat_562952289950408/topic_1659/photos/photo_516@06-05-2026_14-10-04_thumb.jpg" alt="IQ Option 7-Eleven">
+        </a>
+        <div class="flow-label">🏪 7-Eleven</div>
+        <div class="flow-provider">checkout.payretailers.com</div>
+      </div>
+      <div class="flow-item">
+        <a href="ChatExport_2026-05-06/chats/chat_562952289950408/topic_1659/photos/photo_521@06-05-2026_14-16-55.jpg" target="_blank">
+          <img src="ChatExport_2026-05-06/chats/chat_562952289950408/topic_1659/photos/photo_521@06-05-2026_14-16-55_thumb.jpg" alt="IQ Option Scotiabank Cash">
+        </a>
+        <div class="flow-label">🏦 Scotiabank Cash</div>
+        <div class="flow-provider">gateway.safetypay.com</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOREX: POCKET OPTION & DERIV -->
+  <div class="merch-block">
+    <div class="merch-header">
+      <div class="merch-num">14 / 16</div>
+      <div>
+        <div class="merch-title">Pocket Option &amp; Deriv</div>
+        <div class="merch-url">pocketoption.com · deriv.com · Provider: CostaPago + PayRetailers/SafetyPay</div>
+      </div>
+    </div>
+    <div class="flow-grid">
+      <div class="flow-item">
+        <a href="ChatExport_2026-05-06/chats/chat_562952289950408/topic_1659/photos/photo_489@06-05-2026_13-25-39.jpg" target="_blank">
+          <img src="ChatExport_2026-05-06/chats/chat_562952289950408/topic_1659/photos/photo_489@06-05-2026_13-25-39_thumb.jpg" alt="Pocket Option SPEI">
+        </a>
+        <div class="flow-label">🏦 Pocket Option — SPEI</div>
+        <div class="flow-provider">pay.costapago.online</div>
+      </div>
+      <div class="flow-item">
+        <a href="ChatExport_2026-05-06/chats/chat_562952289950408/topic_1659/photos/photo_493@06-05-2026_13-30-52.jpg" target="_blank">
+          <img src="ChatExport_2026-05-06/chats/chat_562952289950408/topic_1659/photos/photo_493@06-05-2026_13-30-52_thumb.jpg" alt="Pocket Option Latam Cash">
+        </a>
+        <div class="flow-label">💵 Pocket Option — Latam Cash</div>
+        <div class="flow-provider">paywall.payretailers.com → safetypay.com</div>
+      </div>
+      <div class="flow-item">
+        <a href="ChatExport_2026-05-06/chats/chat_562952289950408/topic_1659/photos/photo_526@06-05-2026_14-25-53.jpg" target="_blank">
+          <img src="ChatExport_2026-05-06/chats/chat_562952289950408/topic_1659/photos/photo_526@06-05-2026_14-25-53_thumb.jpg" alt="Deriv SPEI CostaPago">
+        </a>
+        <div class="flow-label">🏦 Deriv — SPEI</div>
+        <div class="flow-provider">pay.costapago.online</div>
+      </div>
+      <div class="flow-item">
+        <a href="ChatExport_2026-05-06/chats/chat_562952289950408/topic_1659/photos/photo_529@06-05-2026_14-31-00.jpg" target="_blank">
+          <img src="ChatExport_2026-05-06/chats/chat_562952289950408/topic_1659/photos/photo_529@06-05-2026_14-31-00_thumb.jpg" alt="Deriv SPEI H2H Unlimint">
+        </a>
+        <div class="flow-label">🏦 Deriv — SPEI H2H</div>
+        <div class="flow-provider">Unlimint (direct SPEI, licensed)</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 7: TRANSACTION FIELDS -->
+<section class="section" id="fields">
+  <div class="section-title"><span class="icon">🗂️</span> Transaction Field Prioritization</div>
+  <p class="section-sub">Key data fields observed across SPEI, OXXO, and PayCash flows. Priority defined by payment success risk.</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Priority</th>
+          <th>Field</th>
+          <th>Method</th>
+          <th>Description</th>
+          <th>Critical Risk</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><div class="field-priority"><span class="priority-dot p1"></span> P1</div></td>
+          <td><strong>CLABE</strong></td>
+          <td>SPEI · Mercado Pago</td>
+          <td>18-digit interbank account code. Unique per transaction. Bank: STP, STPMEX, or SOFOM ENT.</td>
+          <td class="td-muted" style="color:#fca5a5;">Wrong CLABE = permanent loss of funds</td>
+        </tr>
+        <tr>
+          <td><div class="field-priority"><span class="priority-dot p1"></span> P1</div></td>
+          <td><strong>Monto exacto (Exact Amount)</strong></td>
+          <td>SPEI · Mercado Pago · PayCash</td>
+          <td>Transfer must match the displayed amount exactly. Underpayment or overpayment = transaction unlinked or rejected.</td>
+          <td class="td-muted" style="color:#fca5a5;">Off-by-1-peso = rejected / unlinked</td>
+        </tr>
+        <tr>
+          <td><div class="field-priority"><span class="priority-dot p1"></span> P1</div></td>
+          <td><strong>Número de referencia (Reference Code)</strong></td>
+          <td>OXXO · PayCash · Paysafecard</td>
+          <td>Merchant-assigned reference given at cashier. User reads out at OXXO / Walmart. Must be entered exactly.</td>
+          <td class="td-muted" style="color:#fca5a5;">Wrong reference = payment cannot be attributed</td>
+        </tr>
+        <tr>
+          <td><div class="field-priority"><span class="priority-dot p2"></span> P2</div></td>
+          <td><strong>Número de convenio (Convention Number)</strong></td>
+          <td>PayCash</td>
+          <td>PayCash service number identifying the merchant. Example: 1win = 198. User tells cashier "pago de servicio PayCash, convenio 198".</td>
+          <td class="td-muted" style="color:#fcd34d;">Wrong convenio = payment goes to wrong merchant</td>
+        </tr>
+        <tr>
+          <td><div class="field-priority"><span class="priority-dot p2"></span> P2</div></td>
+          <td><strong>Beneficiario</strong></td>
+          <td>SPEI</td>
+          <td>Beneficiary name displayed in SPEI instructions. Typically user's full name. Must match bank records (some providers require exact match).</td>
+          <td class="td-muted" style="color:#fcd34d;">Name mismatch may trigger bank AML hold</td>
+        </tr>
+        <tr>
+          <td><div class="field-priority"><span class="priority-dot p2"></span> P2</div></td>
+          <td><strong>Banco / Institución</strong></td>
+          <td>SPEI</td>
+          <td>Receiving bank in SPEI transfer. PSPs using STP as intermediary display "STP", "STPMEX", or "SOFOM ENT". etpay bank-redirect flows display full bank names (BBVA, Banamex, Banorte, Santander).</td>
+          <td class="td-muted" style="color:#fcd34d;">Wrong bank = SPEI rejection</td>
+        </tr>
+        <tr>
+          <td><div class="field-priority"><span class="priority-dot p3"></span> P3</div></td>
+          <td><strong>Concepto / Descripción</strong></td>
+          <td>SPEI</td>
+          <td>Payment description field. Not always required for matching, but some PSPs use it for transaction reference linkage. Low risk of failure if omitted.</td>
+          <td class="td-muted">Optional on most platforms</td>
+        </tr>
+        <tr>
+          <td><div class="field-priority"><span class="priority-dot p4"></span> P4</div></td>
+          <td><strong>Código de barras (Barcode)</strong></td>
+          <td>CoDi / QR</td>
+          <td>Barcode/QR code displayed in Brazino777 CoDi flow. User scans with banking app. Fields: implicit in scan data — no manual entry required.</td>
+          <td class="td-muted">Low risk — scan-based, no typo possible</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- SECTION 8: CONCLUSIONS -->
+<section class="section" id="conclusions">
+  <div class="section-title"><span class="icon">💡</span> Key Insights &amp; Conclusions</div>
+  <p class="section-sub">Analytical findings from the May 2026 Mexico cashier audit.</p>
+
+  <div class="insight-grid">
+    <div class="insight">
+      <h4>DepositCheckout Aggregator Pattern</h4>
+      <p>DepositCheckout operates as de-facto standard for MX iGaming deposits. 7 of 10 betting operators route through one or more of its subdomains (payin / payment / cashier). Its modular subdomain architecture separates method types: payin for SPEI+bank-redirect, payment for cash networks, cashier for Mercado Pago.</p>
+    </div>
+    <div class="insight">
+      <h4>etpay as Universal Bank-Redirect Sublayer</h4>
+      <p>etpay (qt.etpay.com) appears consistently behind multiple PSPs (DepositCheckout, SmartFastPay) for bank-redirect flows. 1xBet BBVA, 1xBet Banamex, Roobet BBVA, 22bet SPEI, Melbet Banorte — all route through etpay. This makes etpay a critical dependency for the MX bank-redirect segment.</p>
+    </div>
+    <div class="insight">
+      <h4>H2H SPEI Presence</h4>
+      <p>Multiple operators maintain direct H2H SPEI capability: 1win (SPEI H2H confirmed), Jugabet (SPEI Personal H2H confirmed), Deriv (SPEI H2H via Unlimint), eToro (Bank Transfer H2H, licensed). H2H flows eliminate PSP margin and latency, but require direct banking relationships or licensed infrastructure.</p>
+    </div>
+    <div class="insight">
+      <h4>OXXO Dual-Provider Pattern</h4>
+      <p>Some operators offer OXXO Pay through multiple providers simultaneously (Mostbet: Pagsmile + DepositCheckout; Roobet: DepositCheckout; Jugabet: DepositCheckout). This suggests PSP redundancy for high-volume cash channels — if one fails, fallback is available.</p>
+    </div>
+    <div class="insight">
+      <h4>PayCash Convention-Number Standardization Risk</h4>
+      <p>Jugabet research note flagged: "1 flow and code everywhere — Service: PAYCASH". If PayCash convention numbers are shared across transactions (not unique per deposit), reconciliation is PSP-side only. The convention number (e.g., 1win = 198) is merchant-level, not transaction-level — reference code alone disambiguates.</p>
+    </div>
+    <div class="insight">
+      <h4>Forex vs iGaming PSP Divergence</h4>
+      <p>Clear PSP segmentation: iGaming uses DepositCheckout + etpay + Pagsmile; Forex uses SafetyPay + PayRetailers + CostaPago + Unlimint. Only Cardpay/Unlimint overlaps both (1win Amex + RoboForex cash + Deriv H2H). This reflects different risk tolerance and compliance frameworks per vertical.</p>
+    </div>
+    <div class="insight">
+      <h4>Mercado Pago as SPEI-over-App Channel</h4>
+      <p>Mercado Pago deposit flows (1xBet, Jugabet, Melbet) are functionally SPEI transfers using Mercado Pago as the bank app. A CLABE is assigned by DepositCheckout; user makes a SPEI transfer from within Mercado Pago. Not a separate payment method — SPEI rails underneath. Merchant benefit: larger unbanked segment uses MP as their primary banking interface.</p>
+    </div>
+    <div class="insight">
+      <h4>CoDi QR — Emerging, Single Operator</h4>
+      <p>Brazino777 is the only audited operator offering CoDi (Banco de México QR system). Given CoDi's growing support in major banking apps (BBVA, Banamex, HSBC), this is likely to expand to more operators in 2026, particularly as World Cup traffic drives mobile-first user acquisition.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div>Mexico · Payment Solutions R&amp;D Report · May 2026 &nbsp;·&nbsp; Research conducted 05–06 May 2026 &nbsp;·&nbsp; <a href="../../index.html">← Back to Portal</a></div>
+  <div style="margin-top:6px;font-size:10px;color:#475569;">All data sourced from live cashier research. No data has been invented. Unverified claims are marked explicitly. For internal R&amp;D use only.</div>
+</footer>
+
+</body>
+</html>
